@@ -5,8 +5,11 @@
 #================================================#
 # Set your active time window here.
 START_HOUR=11  # The hour the signals should start (e.g., 11 for 11:00)
-END_HOUR=3     # The hour the signals should end   (e.g., 3 for 03:59)
+END_HOUR=3     # The hour the signals should end   (e.g., 4 for 04:59)
 #================================================#
+
+# --- debug ---
+termux-tts-speak "Interval timer started successfully!"
 
 # --- Wake Lock and Cleanup ---
 # This function is called when the script is stopped (e.g., with Ctrl+C)
@@ -31,7 +34,7 @@ play_beeps() {
   for i in {1..5}
   do
     play -q -n synth 0.12 sine 1000 vol 0.6
-    sleep 0.1
+    sleep 0.3
   done
 }
 
