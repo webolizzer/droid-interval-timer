@@ -1,10 +1,14 @@
-#!/bin/bash
-# This script keeps timer.sh running from the interval-timer directory.
+#!/data/data/com.termux/files/usr/bin/bash
+set -u
+
+DIR="$HOME/droid-interval-timer"
+LOG="$DIR/timer.log"
+cd "$DIR"
 
 while true; do
-  echo "[Watcher] Starting timer.sh..."
-  # The path is updated to look inside the same folder.
-  ~/droid-interval-timer/timer.sh
-  echo "[Watcher] timer.sh has stopped. Restarting in 5 seconds..."
+  echo "[$(date '+%F %T')] [Watcher] Starting timer.sh..." >> "$LOG"
+  bash "$DIR/timer.sh" >> "$LOG" 2>&1
+  code=$?
+  echo "[$(date '+%F %T')] [Watcher] timer.sh exited with $code. Restarting in 5s..." >> "$LOG"
   sleep 5
 done
