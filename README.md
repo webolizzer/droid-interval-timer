@@ -117,4 +117,4 @@ The system uses two scripts for maximum reliability:
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/webolizzer/droid-interval-timer/blob/main/LICENSE) file for details.
