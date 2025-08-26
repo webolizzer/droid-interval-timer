@@ -8,7 +8,7 @@ START_HOUR=11  # The hour the signals should start (e.g., 11 for 11:00)
 END_HOUR=3     # The hour the signals should end   (e.g., 4 for 04:59)
 #================================================#
 
-# --- debug ---
+# --- Status Message ---
 termux-tts-speak "Interval timer started successfully!"
 
 # --- Wake Lock and Cleanup ---
@@ -34,7 +34,7 @@ play_beeps() {
   for i in {1..5}
   do
     play -q -n synth 0.12 sine 1000 vol 0.6
-    sleep 0.3
+    sleep 0.55
   done
 }
 
@@ -46,7 +46,7 @@ do
   CURRENT_SECOND=$(date +%-S)
   SECONDS_PAST_MARK=$(( (CURRENT_MINUTE % 15) * 60 + CURRENT_SECOND ))
   SECONDS_TO_WAIT=$(( 900 - SECONDS_PAST_MARK ))
-  echo "Waiting $SECONDS_TO_WAIT seconds to sync to the next quarter hour..."
+#  echo "Waiting $SECONDS_TO_WAIT seconds to sync to the next quarter hour..."
   sleep $SECONDS_TO_WAIT
 
   # Time Window Check
@@ -64,27 +64,25 @@ do
 
   if [ "$IS_ACTIVE" = true ]; then
     MINUTE_NOW=$(date +%M)
-    echo "It's $(date +%H:%M). Running signal for minute $MINUTE_NOW."
+ #   echo "It's $(date +%H:%M). Running signal for minute $MINUTE_NOW."
 
     case "$MINUTE_NOW" in
       "00")
         play_beeps
-        termux-tts-speak "round 1"
+        termux-tts-speak "Round 1"
         ;;
       "15")
         play_beeps
-        termux-tts-speak "round 2"
+        termux-tts-speak "Round 2"
         ;;
       "30")
         play_beeps
-        termux-tts-speak "round 3"
+        termux-tts-speak "Round 3"
         ;;
       "45")
         play_beeps
-        termux-tts-speak "Take a break"
+        termux-tts-speak "Take a break!"
         ;;
     esac
-  else
-    echo "It's $(date +%H:%M), a quarter hour, but outside the active window. Skipping."
   fi
 done
