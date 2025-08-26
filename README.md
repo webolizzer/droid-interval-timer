@@ -53,7 +53,7 @@ This final step copies the launcher script to a special directory where `Termux:
 
 ```bash
 mkdir -p ~/.termux/boot
-cp start-timer.sh ~/.termux/boot/
+ln -s ~/interval-timer/start-timer.sh ~/.termux/boot/start-timer.sh
 ```
 
 **5. Reboot Your Device**
