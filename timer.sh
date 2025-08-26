@@ -5,7 +5,7 @@
 #================================================#
 # Set your active time window here.
 START_HOUR=11  # The hour the signals should start (e.g., 11 for 11:00)
-END_HOUR=4     # The hour the signals should end   (e.g., 4 for 04:59)
+END_HOUR=3     # The hour the signals should end   (e.g., 3 for 03:59)
 #================================================#
 
 # --- Wake Lock and Cleanup ---
