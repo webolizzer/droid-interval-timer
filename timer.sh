@@ -29,28 +29,26 @@ termux-wake-lock
 # --- End of Wake Lock ---
 
 
-# A function to play the 5-beep sequence.
-play_beeps() {
-  for i in {1..5}
-  do
-    play -q -n synth 0.12 sine 1000 vol 0.6
-    sleep 0.55
-  done
+# A function to play the beep sequence and speak
+play_beeps_and_speak() {
+  local text="$1"
+  play -q -n synth 0.12 sine 1000 fade 0.005 0.12 0.02 vol -6dB pad 0 0.15 repeat 1
+  termux-tts-speak "$text"
 }
 
 # Infinite loop to keep the script running.
 while true
 do
   # Synchronization Logic
+  CURRENT_HOUR=$(date +%H)
   CURRENT_MINUTE=$(date +%-M)
   CURRENT_SECOND=$(date +%-S)
   SECONDS_PAST_MARK=$(( (CURRENT_MINUTE % 15) * 60 + CURRENT_SECOND ))
   SECONDS_TO_WAIT=$(( 900 - SECONDS_PAST_MARK ))
-#  echo "Waiting $SECONDS_TO_WAIT seconds to sync to the next quarter hour..."
+
   sleep $SECONDS_TO_WAIT
 
   # Time Window Check
-  CURRENT_HOUR=$(date +%H)
   IS_ACTIVE=false
   if [ $START_HOUR -gt $END_HOUR ]; then
     if [ "$CURRENT_HOUR" -ge $START_HOUR ] || [ "$CURRENT_HOUR" -le $END_HOUR ]; then
@@ -64,24 +62,19 @@ do
 
   if [ "$IS_ACTIVE" = true ]; then
     MINUTE_NOW=$(date +%M)
- #   echo "It's $(date +%H:%M). Running signal for minute $MINUTE_NOW."
 
     case "$MINUTE_NOW" in
       "00")
-        play_beeps
-        termux-tts-speak "Round 1"
+        play_beeps_and_speak "Round 1"
         ;;
       "15")
-        play_beeps
-        termux-tts-speak "Round 2"
+        play_beeps_and_speak "Round 2"
         ;;
       "30")
-        play_beeps
-        termux-tts-speak "Round 3"
+        play_beeps_and_speak "Round 3"
         ;;
       "45")
-        play_beeps
-        termux-tts-speak "Take a break!"
+        play_beeps_and_speak "Take a break!"
         ;;
     esac
   fi

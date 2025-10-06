@@ -115,6 +115,11 @@ The system uses two scripts for maximum reliability:
   - **Error: `play: command not found`?**
       - You need to install the `sox` package. Run `pkg install sox` in your terminal.
 
+### Stop the script
+```
+pkill -f droid-interval-timer/start-timer.sh; pkill -f droid-interval-timer/timer.sh
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/webolizzer/droid-interval-timer/blob/main/LICENSE) file for details.
