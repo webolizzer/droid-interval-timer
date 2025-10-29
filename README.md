@@ -17,6 +17,7 @@ This project was developed to provide a simple, battery-efficient, and highly re
 
 Before you begin, you must have the following applications installed on your Android device. It is **highly recommended** to install them all from the same source (e.g., F-Droid) to ensure compatibility.
 
+0. Install F-Droid from https://f-droid.org/
 1.  **[Termux](https://f-droid.org/en/packages/com.termux/)**: The main terminal emulator environment.
 2.  **[Termux:API](https://f-droid.org/en/packages/com.termux.api/)**: An add-on that exposes Android API functionality to the command line. Required for the wake lock and text-to-speech features.
 3.  **[Termux:Boot](https://f-droid.org/en/packages/com.termux.boot/)**: An add-on that allows scripts to be run at boot time.
