@@ -73,8 +73,8 @@ Open `timer.sh` and find the `CONFIGURATION` section at the top.
 #                 CONFIGURATION                  #
 #================================================#
 # Set your active time window here.
-START_HOUR=11  # The hour the signals should start (e.g., 11 for 11:00)
-END_HOUR=3     # The hour the signals should end   (e.g., 4 for 03:59)
+START_HOUR=8  # The hour the signals should start (e.g., 8 for 8:00)
+END_HOUR=23   # The hour the signals should end   (e.g., 23 for 23:59)
 ```
 
   - `START_HOUR`: The hour (0-23) you want signals to begin.
@@ -87,17 +87,15 @@ You can change the voice announcement for each quarter-hour by editing the `case
 ```bash
     case "$MINUTE_NOW" in
       "00")
-        play_beeps
-        termux-tts-speak "round 1"
+        play_beeps_and_speak "Round 1"
         ;;
       "15")
-        play_beeps
-        termux-tts-speak "round 2"
+        play_beeps_and_speak "Round 2"
         ;;
       # ... and so on
 ```
 
-Simply change the text inside the quotes for any `termux-tts-speak` command to whatever you'd like to hear.
+Simply change the text inside the quotes to whatever you'd like to hear.
 
 ## How It Works
 
