@@ -1,7 +1,12 @@
 #!/bin/bash
 
-START_HOUR=8
-END_HOUR=23
+#================================================#
+#                 CONFIGURATION                  #
+#================================================#
+# Set your active time window here.
+START_HOUR=8  # The hour the signals should start (e.g., 8 for 8:00)
+END_HOUR=23   # The hour the signals should end   (e.g., 23 for 23:59)
+#================================================#
 
 termux-tts-speak "Interval timer started successfully!"
 
