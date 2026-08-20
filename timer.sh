@@ -1,61 +1,53 @@
 #!/bin/bash
 
-#================================================#
-#                 CONFIGURATION                  #
-#================================================#
-# Set your active time window here.
-START_HOUR=11  # The hour the signals should start (e.g., 11 for 11:00)
-END_HOUR=3     # The hour the signals should end   (e.g., 4 for 04:59)
-#================================================#
+START_HOUR=8
+END_HOUR=23
 
-# --- Status Message ---
 termux-tts-speak "Interval timer started successfully!"
 
-# --- Wake Lock and Cleanup ---
-# This function is called when the script is stopped (e.g., with Ctrl+C)
 cleanup() {
-    echo -e "\nReleasing wake lock and exiting."
-    termux-wake-unlock
-    exit 0
+  echo -e "\nReleasing wake lock and exiting."
+  termux-wake-unlock
+  exit 0
 }
 
-# 'trap' ensures the cleanup function runs when the script exits or is interrupted.
-# This prevents the wake lock from draining your battery after you stop the script.
 trap cleanup SIGINT EXIT
 
-# Acquire a wake lock to allow the script to run with the screen off.
 echo "Acquiring wake lock to run in the background..."
 termux-wake-lock
-# --- End of Wake Lock ---
 
-
-# A function to play the beep sequence and speak
 play_beeps_and_speak() {
   local text="$1"
+  local cur_vol max_vol target_vol
+
+  cur_vol=$(termux-volume | grep -A 2 '"stream": "music"' | grep '"volume"' | grep -o '[0-9]\+')
+  max_vol=$(termux-volume | grep -A 3 '"stream": "music"' | grep '"max_volume"' | grep -o '[0-9]\+')
+  target_vol=$(( max_vol * 20 / 100 ))
+  [ "$target_vol" -eq 0 ] && target_vol=1
+
+  termux-volume music "$target_vol"
   play -q -n synth 0.12 sine 1000 fade 0.005 0.12 0.02 vol -6dB pad 0 0.15 repeat 1
   termux-tts-speak "$text"
+  termux-volume music "$cur_vol"
 }
 
-# Infinite loop to keep the script running.
 while true
 do
-  # Synchronization Logic
   CURRENT_HOUR=$(date +%H)
   CURRENT_MINUTE=$(date +%-M)
   CURRENT_SECOND=$(date +%-S)
   SECONDS_PAST_MARK=$(( (CURRENT_MINUTE % 15) * 60 + CURRENT_SECOND ))
   SECONDS_TO_WAIT=$(( 900 - SECONDS_PAST_MARK ))
 
-  sleep $SECONDS_TO_WAIT
+  sleep "$SECONDS_TO_WAIT"
 
-  # Time Window Check
   IS_ACTIVE=false
-  if [ $START_HOUR -gt $END_HOUR ]; then
-    if [ "$CURRENT_HOUR" -ge $START_HOUR ] || [ "$CURRENT_HOUR" -le $END_HOUR ]; then
+  if [ "$START_HOUR" -gt "$END_HOUR" ]; then
+    if [ "$CURRENT_HOUR" -ge "$START_HOUR" ] || [ "$CURRENT_HOUR" -le "$END_HOUR" ]; then
       IS_ACTIVE=true
     fi
   else
-    if [ "$CURRENT_HOUR" -ge $START_HOUR ] && [ "$CURRENT_HOUR" -le $END_HOUR ]; then
+    if [ "$CURRENT_HOUR" -ge "$START_HOUR" ] && [ "$CURRENT_HOUR" -le "$END_HOUR" ]; then
       IS_ACTIVE=true
     fi
   fi
